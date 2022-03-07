@@ -14,9 +14,10 @@ class CreateProductCategoriesTable extends Migration
     public function up()
     {
         Schema::create('product_categories', function (Blueprint $table) {
-            $table->id();
-            $table->longText('product_category_name');
-            $table->timestamps();
+		$table->id();
+		$table->engine = "InnoDB";
+        $table->longText('product_category_name');
+        $table->timestamps();
         });
     }
 
@@ -30,3 +31,4 @@ class CreateProductCategoriesTable extends Migration
         Schema::dropIfExists('product_categories');
     }
 }
+

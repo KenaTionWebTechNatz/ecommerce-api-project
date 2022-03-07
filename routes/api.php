@@ -21,3 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('/all_product_categories','ProductCategoriesController@index');
 
 Route::get('/all_product_categories', [ProductCategoriesController::class, 'index']);
+Route::post('/adding_product_category', [ProductCategoriesController::class, 'store']);
+Route::post('/single_product_category', [ProductCategoriesController::class, 'show']);
+Route::post('/update_product_category', [ProductCategoriesController::class, 'update']);
+Route::post('/delete_product_category', [ProductCategoriesController::class, 'destroy']);
+

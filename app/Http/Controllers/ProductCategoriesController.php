@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreproductCategoriesRequest;
 use App\Http\Requests\UpdateproductCategoriesRequest;
 use App\Models\productCategories\productCategories;
+use Illuminate\Http\Request;
 
 class ProductCategoriesController extends Controller
 {
@@ -37,6 +38,12 @@ class ProductCategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        $newProductCategory = new productCategories();
+        $newProductCategory->product_category_name = $request->product_category_name;
+        $newProductCategory->save();
+
+
+        return response()->json($this->index(),200);
     }
 
     /**
@@ -45,9 +52,15 @@ class ProductCategoriesController extends Controller
      * @param  \App\Models\productCategories\productCategories  $productCategories
      * @return \Illuminate\Http\Response
      */
-    public function show(productCategories $productCategories)
+    public function show(Request $request)
     {
-        //
+        $product_id = $request->id;
+
+        $product = productCategories::where('id','=',$product_id)->get();
+
+        return response()->json($product, 200); 
+
+
     }
 
     /**
@@ -68,9 +81,27 @@ class ProductCategoriesController extends Controller
      * @param  \App\Models\productCategories\productCategories  $productCategories
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateproductCategoriesRequest $request, productCategories $productCategories)
+    public function update(Request $request)
     {
-        //
+        $product_id = $request->id;
+        $product_category_name = $request->product_category_name;
+
+        $productCategories = productCategories::where('id','=',$product_id)->get();
+
+        foreach($productCategories as $productCategory){
+
+
+            $productCategory->product_category_name = $product_category_name;
+
+            $productCategory->save();
+        }
+
+
+        $id_details= new Request();
+        $id_details['id'] = $product_id;
+
+        return response()->json($this->show($id_details), 200);
+
     }
 
     /**
@@ -79,8 +110,20 @@ class ProductCategoriesController extends Controller
      * @param  \App\Models\productCategories\productCategories  $productCategories
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productCategories $productCategories)
+    public function destroy(Request $request)
     {
-        //
+        $product_id = $request->id;
+        
+        $product = productCategories::where('id','=',$product_id)->get();
+
+        foreach($product as $productCategory){
+
+
+
+            $productCategory->delete();
+        }
+
+        return response()->json($this->index(), 200);
+
     }
 }
